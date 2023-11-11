@@ -54,6 +54,21 @@ def test():
         for row in rows:
             print(f'Login: {row[1]} \nPassword: {row[2]} \nabout: {row[3]} \n\n' + 15 * '-' + '\n')
 
+def about():
+    with sqlite3.connect('login.db') as c:
+        cur = c.cursor()
+        select = int(input('Select: '))
+        if select == 1:
+            About = input('About me: ')
+            cur.execute('UPDATE Users SET (about) = (?) WHERE (login) = ? AND (password) = ?', (About, Login, Password))
+        elif select == 2:
+            cur.execute('SELECT (about) FROM Users WHERE (login) = ? AND (password) = ?', (Login, Password))
+            result = cur.fetchone()
+            if result == None:
+                print('First update something about you')
+            else:
+                print(result)
+
 def main():
     create_db()
     while True:
@@ -69,3 +84,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    about()
